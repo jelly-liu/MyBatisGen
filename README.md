@@ -16,3 +16,29 @@ mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.
     <artifactId>ojdbc14</artifactId>  
     <version>10.2.0.4.0</version>  
 </dependency>  
+# How to useage
+just change config.properties, for an example  
+<pre>
+#out put dir
+outDir=F:/out/
+#database.type:mysql,oracle
+database.type=mysql
+database.name=eoss
+#sqlCase:upper,lower
+sqlCase=upper
+#model package name
+model.package=com.jelly.eoss.model
+#mysql database url
+mysql.url = jdbc:mysql://localhost:3306/eoss?useUnicode=true&characterEncoding=utf8&useOldAliasMetadataBehavior=true
+mysql.username = root
+mysql.password = sa
+#databasetype-javatype
+mysql.ref=TINYINT-Integer|INT-Integer|BIGINT-Long|DECIMAL-BigDecimal|CHAR-String|VARCHAR-String|TEXT-String|LONGTEXT-String|DATETIME-Date
+#oracle database url
+oracle.url =
+oracle.username =
+oracle.password =
+#databasetype-javatype
+oracle.ref=NUMBER-Long|DATA_SCALE-BigDecimal|NVARCHAR2-String|VARCHAR2-String|VARCHAR-String|CHAR-String|CLOB-String|DATE-Date
+
+</pre>
