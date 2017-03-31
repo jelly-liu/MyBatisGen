@@ -1,4 +1,4 @@
-package com.collonn.mybatis.util;
+package com.jelly.mybatis.util;
 
 public class GenUtil {
 	//将数据库的表名，转换为JavaBean名

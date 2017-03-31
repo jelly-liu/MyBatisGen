@@ -1,7 +1,7 @@
-package com.collonn.mybatis.impl;
+package com.jelly.mybatis.impl;
 
-import com.collonn.mybatis.interfaces.Gen;
-import com.collonn.mybatis.util.Logger;
+import com.jelly.mybatis.interfaces.Gen;
+import com.jelly.mybatis.util.Logger;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;

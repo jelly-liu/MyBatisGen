@@ -1,7 +1,7 @@
-package com.collonn.mybatis.impl;
+package com.jelly.mybatis.impl;
 
-import com.collonn.mybatis.interfaces.Gen;
-import com.collonn.mybatis.util.Logger;
+import com.jelly.mybatis.interfaces.Gen;
+import com.jelly.mybatis.util.Logger;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;

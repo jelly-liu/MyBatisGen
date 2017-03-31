@@ -1,9 +1,9 @@
-package com.collonn.mybatis;
+package com.jelly.mybatis;
 
-import com.collonn.mybatis.impl.GenMySQL;
-import com.collonn.mybatis.impl.GenOracle;
-import com.collonn.mybatis.interfaces.Gen;
-import com.collonn.mybatis.util.Logger;
+import com.jelly.mybatis.impl.GenMySQL;
+import com.jelly.mybatis.impl.GenOracle;
+import com.jelly.mybatis.interfaces.Gen;
+import com.jelly.mybatis.util.Logger;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;

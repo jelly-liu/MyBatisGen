@@ -1,4 +1,4 @@
-package com.collonn.mybatis;
+package com.jelly.mybatis;
 
 public class GenMain {
 

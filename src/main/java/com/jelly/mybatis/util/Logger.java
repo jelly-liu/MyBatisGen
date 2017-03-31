@@ -1,4 +1,4 @@
-package com.collonn.mybatis.util;
+package com.jelly.mybatis.util;
 
 public class Logger {
 	public static final String PRE_SHORT = "------------";

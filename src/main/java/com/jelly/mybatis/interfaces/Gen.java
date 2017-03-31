@@ -1,7 +1,7 @@
-package com.collonn.mybatis.interfaces;
+package com.jelly.mybatis.interfaces;
 
-import com.collonn.mybatis.util.GenUtil;
-import com.collonn.mybatis.util.Logger;
+import com.jelly.mybatis.util.GenUtil;
+import com.jelly.mybatis.util.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 
 import javax.sql.DataSource;
