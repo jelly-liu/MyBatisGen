@@ -1,13 +1,14 @@
 package com.jelly.mybatis;
 
-import com.jelly.mybatis.impl.GenMySQL;
-import com.jelly.mybatis.impl.GenOracle;
 import com.jelly.mybatis.interfaces.Gen;
+import com.jelly.mybatis.interfaces.impl.MySQLGen;
+import com.jelly.mybatis.interfaces.impl.OracleGen;
 import com.jelly.mybatis.util.Logger;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.HashMap;
@@ -18,7 +19,13 @@ public class MybatisFreemarker {
 	private Configuration freemarkerConfiguration;
 
 	private String outDir;
+    private String modelDir;
 	private String mapperDir;
+    private String mapperInterfaceDir;
+    private String daoDir;
+    private String daoImplDir;
+    private String serviceDir;
+    private String serviceImplDir;
 	
 	private Gen gen;
 	private Map<String, Object> rootMap = new HashMap<String, Object>();
@@ -42,34 +49,39 @@ public class MybatisFreemarker {
 		if(!this.outDir.endsWith("/")){
 			this.outDir += "/";
 		}
-		this.mapperDir = this.outDir + "mapper/";
+
+		this.modelDir = this.outDir + "model/";
+        this.mapperDir = this.outDir + "mapper/";
+        this.mapperInterfaceDir = this.outDir + "mapper/";
+        this.daoDir = this.outDir + "dao/";
+        this.daoImplDir = this.outDir + "dao/impl/";
+        this.serviceDir = this.outDir + "service/";
+        this.serviceImplDir = this.outDir + "service/impl/";
 		this.checkDir();
 		
 		String databaseType = properties.getProperty("database.type").toLowerCase();
 		Logger.info("databaseType:" + databaseType);
 		if(databaseType.equals("mysql")){
-			this.gen = new GenMySQL(properties);
+			this.gen = new MySQLGen(properties);
 		}else{
-			this.gen = new GenOracle(properties);
+			this.gen = new OracleGen(properties);
 		}
 	}
 	
 	private void checkDir() throws Exception{
 		//check pojo dir
 		File dirPojo = new File(this.outDir);
-		if(!dirPojo.exists()){
-			dirPojo.mkdirs();
-		}else{
-			FileUtils.cleanDirectory(dirPojo);
+		if(dirPojo.exists()){
+            FileUtils.cleanDirectory(dirPojo);
 		}
-		
-		//check mapper dir
-		File dirMapper = new File(this.mapperDir);
-		if(!dirMapper.exists()){
-			dirMapper.mkdirs();
-		}else{
-			FileUtils.cleanDirectory(dirMapper);
-		}
+
+        new File(this.outDir).mkdirs();
+        new File(this.modelDir).mkdirs();
+        new File(this.mapperDir).mkdirs();
+        new File(this.daoDir).mkdirs();
+        new File(this.daoImplDir).mkdirs();
+        new File(this.serviceDir).mkdirs();
+        new File(this.serviceImplDir).mkdirs();
 	}
 	
 	private void setFtlParam(String tableName){
@@ -81,6 +93,10 @@ public class MybatisFreemarker {
 		rootMap.put("columnJavaNameMap", this.gen.getColumnJavaNameMap());
 		
 		rootMap.put("modelPackage", this.gen.getModelPackage());
+        rootMap.put("mapperPackage", this.gen.getMapperPackage());
+        rootMap.put("mapperInterfacePackage", this.gen.getMapperPackage());
+        rootMap.put("daoPackage", this.gen.getDaoPackage());
+        rootMap.put("servicePackage", this.gen.getServicePackage());
 	}
 	
 	public void genPOJO() throws Exception {
@@ -93,7 +109,7 @@ public class MybatisFreemarker {
 			Template template = freemarkerConfiguration.getTemplate("model.ftl");
 			/* 将模板和数据模型合并 */
 			String modelName = this.gen.getTableNamePojoNameMap().get(tableName);
-			Writer out = new OutputStreamWriter(new FileOutputStream(this.outDir + modelName + ".java"), "UTF-8");
+			Writer out = new OutputStreamWriter(new FileOutputStream(this.modelDir + modelName + ".java"), "UTF-8");
 			template.process(rootMap, out);
 			out.flush();
 
@@ -111,13 +127,93 @@ public class MybatisFreemarker {
 			Template template = freemarkerConfiguration.getTemplate("mapper.ftl");
 			/* 将模板和数据模型合并 */
 			String mapperName = this.gen.getTableNamePojoNameMap().get(tableName);
-			Writer out = new OutputStreamWriter(new FileOutputStream(this.outDir + "mapper/" + mapperName + ".Mapper.xml"), "UTF-8");
+			Writer out = new OutputStreamWriter(new FileOutputStream(this.mapperDir + mapperName + ".Mapper.xml"), "UTF-8");
 			template.process(rootMap, out);
 			out.flush();
 
 			out.close();
 		}
 	}
+
+    public void genMapperInterface() throws Exception {
+        for(String tableName : this.gen.getTablesNames()){
+            Logger.info(Logger.PRE_LONG + "genMapperInterface(), tableName=" + tableName);
+
+            /* 设置ftl模板参数 */
+            this.setFtlParam(tableName);
+            /* 获取模板 */
+            Template template = freemarkerConfiguration.getTemplate("mapperInterface.ftl");
+            /* 将模板和数据模型合并 */
+            String mapperInterfaceName = this.gen.getTableNamePojoNameMap().get(tableName) + "Mapper";
+            Writer out = new OutputStreamWriter(new FileOutputStream(this.mapperDir + mapperInterfaceName + ".java"), "UTF-8");
+            template.process(rootMap, out);
+            out.flush();
+
+            out.close();
+        }
+    }
+
+    public void genDao() throws Exception {
+        for(String tableName : this.gen.getTablesNames()){
+            Logger.info(Logger.PRE_LONG + "genDao(), tableName=" + tableName);
+
+            /* 设置ftl模板参数 */
+            this.setFtlParam(tableName);
+            /* 获取模板 */
+            Template template = freemarkerConfiguration.getTemplate("dao.ftl");
+            /* 将模板和数据模型合并 */
+            String daoName = this.gen.getTableNamePojoNameMap().get(tableName) + "Dao";
+            Writer out = new OutputStreamWriter(new FileOutputStream(this.daoDir + daoName + ".java"), "UTF-8");
+            template.process(rootMap, out);
+            out.flush();
+            out.close();
+        }
+        for(String tableName : this.gen.getTablesNames()){
+            Logger.info(Logger.PRE_LONG + "genDaoImpl(), tableName=" + tableName);
+
+            /* 设置ftl模板参数 */
+            this.setFtlParam(tableName);
+            /* 获取模板 */
+            Template template = freemarkerConfiguration.getTemplate("daoImpl.ftl");
+            /* 将模板和数据模型合并 */
+            String daoImplName = this.gen.getTableNamePojoNameMap().get(tableName) + "DaoImpl";
+            Writer out = new OutputStreamWriter(new FileOutputStream(this.daoImplDir + daoImplName + ".java"), "UTF-8");
+            template.process(rootMap, out);
+            out.flush();
+            out.close();
+        }
+    }
+
+    public void genService() throws Exception {
+        for(String tableName : this.gen.getTablesNames()){
+            Logger.info(Logger.PRE_LONG + "genService(), tableName=" + tableName);
+
+            /* 设置ftl模板参数 */
+            this.setFtlParam(tableName);
+            /* 获取模板 */
+            Template template = freemarkerConfiguration.getTemplate("service.ftl");
+            /* 将模板和数据模型合并 */
+            String daoName = this.gen.getTableNamePojoNameMap().get(tableName) + "Service";
+            Writer out = new OutputStreamWriter(new FileOutputStream(this.serviceDir + daoName + ".java"), "UTF-8");
+            template.process(rootMap, out);
+            out.flush();
+            out.close();
+        }
+        for(String tableName : this.gen.getTablesNames()){
+            Logger.info(Logger.PRE_LONG + "genServiceImpl(), tableName=" + tableName);
+
+            /* 设置ftl模板参数 */
+            this.setFtlParam(tableName);
+            /* 获取模板 */
+            Template template = freemarkerConfiguration.getTemplate("serviceImpl.ftl");
+            /* 将模板和数据模型合并 */
+            String daoImplName = this.gen.getTableNamePojoNameMap().get(tableName) + "ServiceImpl";
+            Writer out = new OutputStreamWriter(new FileOutputStream(this.serviceImplDir + daoImplName + ".java"), "UTF-8");
+            template.process(rootMap, out);
+            out.flush();
+            out.close();
+        }
+    }
 
 	//getter and setter
 	public String getOutDir() {

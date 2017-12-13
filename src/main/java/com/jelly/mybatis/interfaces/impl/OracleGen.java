@@ -1,8 +1,8 @@
-package com.jelly.mybatis.impl;
+package com.jelly.mybatis.interfaces.impl;
 
 import com.jelly.mybatis.interfaces.Gen;
 import com.jelly.mybatis.util.Logger;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import oracle.jdbc.pool.OracleDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
@@ -11,26 +11,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-public class GenMySQL extends Gen {
-	
-	public GenMySQL(Properties properties) throws Exception{
+public class OracleGen extends Gen {
+
+	public OracleGen(Properties properties) throws Exception {
 		this.prepare(properties);
 	}
-	
+
 	protected void initDs() throws Exception{
-		MysqlDataSource myDs = new MysqlDataSource();
-		myDs.setUrl(this.properties.getProperty("mysql.url"));
-		myDs.setUser(this.properties.getProperty("mysql.username"));
-		myDs.setPassword(this.properties.getProperty("mysql.password"));
-		this.ds = myDs;
+		OracleDataSource oraDs = new OracleDataSource();
+		oraDs.setURL(this.properties.getProperty("oracle.url"));
+		oraDs.setUser(this.properties.getProperty("oracle.username"));
+		oraDs.setPassword(this.properties.getProperty("oracle.password"));
+		this.ds = oraDs;
 		this.qr = new QueryRunner(this.ds);
 	}
 
 	protected void getTables() throws Exception{
 		String sql = "";
-		sql += "SELECT a.TABLE_NAME AS \"TABLE_NAME\" ";
-		sql += "FROM information_schema.TABLES a ";
-		sql += "WHERE LOWER(a.TABLE_SCHEMA) = '" + this.databaseName.toLowerCase() + "'";
+		sql += "SELECT a.TABLE_NAME as \"TABLE_NAME\" FROM USER_TABLES a";
 		
 		List<Map<String, Object>> dataList = this.qr.query(sql, new MapListHandler());
 		if(dataList == null || dataList.size() == 0){
@@ -50,11 +48,13 @@ public class GenMySQL extends Gen {
 	
 	protected void getPKs() throws Exception {
 		String sql = "";
-		sql += "SELECT a.TABLE_NAME as \"TABLE_NAME\", GROUP_CONCAT(a.COLUMN_NAME) AS \"PKS\" ";
-		sql += "FROM information_schema.columns a  ";
+		sql += "SELECT a.TABLE_NAME AS \"TABLE_NAME\", wm_concat(a.column_name) AS \"PKS\" ";
+		sql += "FROM user_cons_columns a ";
+		sql += "INNER JOIN user_constraints b ON a.constraint_name = b.constraint_name ";
 		sql += "WHERE 1 = 1 ";
-		sql += "AND LOWER(a.TABLE_SCHEMA) = '" + this.databaseName.toLowerCase() + "' ";
-		sql += "AND LOWER(a.COLUMN_KEY) = 'pri' ";
+		sql += "AND b.constraint_type = 'P'";
+		sql += "AND INSTR(a.table_name, 'BIN$') = 0 ";
+		sql += "AND UPPER(a.owner) = '" + this.databaseName.toUpperCase() + "' ";
 		sql += "GROUP BY a.TABLE_NAME ";
 		List<Map<String, Object>> dataList = qr.query(sql, new MapListHandler());
 		
@@ -77,7 +77,12 @@ public class GenMySQL extends Gen {
 			String tmp = "";
 			for(int i = 0; i < pks.length; i++){
 				pks[i] = (this.sqlCase.equals("upper") ? pks[i].toUpperCase() : pks[i].toLowerCase());
-				tmp += pks[i] + ",";
+				
+				//will print this string
+				tmp += pks[i];
+				if(i != pks.length - 1){
+					tmp += ",";
+				}
 			}
 			
 			this.pksMap.put(tableName, pks);
@@ -88,11 +93,9 @@ public class GenMySQL extends Gen {
 	protected void getColumnsInfo() throws Exception {
 		for(String tableName : this.tablesNames){
 			String sql = "";
-			sql += "SELECT a.COLUMN_NAME as \"COLUMN_NAME\", a.DATA_TYPE as \"DATA_TYPE\" ";
-			sql += "FROM information_schema.columns a ";
-			sql += "WHERE LOWER(a.TABLE_SCHEMA) = '" + this.databaseName.toLowerCase() + "' ";
-			sql += "AND LOWER(a.TABLE_NAME) = '" + tableName.toLowerCase() + "' ";
-			sql += "ORDER BY a.ORDINAL_POSITION ASC";
+			sql += "select a.COLUMN_NAME as \"COLUMN_NAME\", a.DATA_TYPE as \"DATA_TYPE\", a.DATA_SCALE as \"DATA_SCALE\" ";
+			sql += "from user_tab_columns a where a.table_name ='" + tableName.toUpperCase() + "' ";
+			sql += "order by a.COLUMN_ID asc";
 			List<Map<String, Object>> dataList = qr.query(sql, new MapListHandler());
 			
 			String key = null;
@@ -112,18 +115,26 @@ public class GenMySQL extends Gen {
 		String columnName = null;
 		String javaType = null;
 		String databaseType = null;
+		Object dataScale = null;
 		
 		Logger.info(Logger.PRE_LONG + "getColumnJavaType()");
-		Logger.info("tableName,columnName,databaseType,javaType");
+		Logger.info("tableName,columnName,databaseType,dataScale,javaType");
 		Logger.info(Logger.PRE_MID);
 		
 		for(Entry<String, Map<String, Object>> entry : this.columnInfoMap.entrySet()){
 			tableName = entry.getKey().substring(0, entry.getKey().indexOf("|"));
 			columnName = entry.getKey().substring(entry.getKey().indexOf("|") + 1);
 			
+			dataScale = this.columnInfoMap.get(tableName + "|" + columnName).get("DATA_SCALE");
 			databaseType = this.columnInfoMap.get(tableName + "|" + columnName).get("DATA_TYPE").toString().toUpperCase();
-			javaType = this.refMap.get(databaseType);
-			Logger.info(tableName + "," + columnName + "," + databaseType + "," + javaType);
+			
+			if(dataScale == null || dataScale.toString().equals("")){
+				javaType = this.refMap.get(databaseType);
+				dataScale = "";
+			}else{
+				javaType = this.refMap.get("DATA_SCALE");
+			}
+			Logger.info(tableName + "," + columnName + "," + databaseType + "," + dataScale + "," + javaType);
 			
 			this.columnJavaTypeMap.put(tableName + "|" + columnName, javaType);
 		}

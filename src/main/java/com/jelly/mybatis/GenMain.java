@@ -8,6 +8,9 @@ public class GenMain {
 		
 		mybatisGen.genPOJO();
 		mybatisGen.genMapper();
+		mybatisGen.genMapperInterface();
+		mybatisGen.genDao();
+        mybatisGen.genService();
 		
 		Runtime.getRuntime().exec("cmd.exe /c start " + mybatisGen.getOutDir());
 	}
