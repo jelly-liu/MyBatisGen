@@ -1,6 +1,40 @@
 package com.jelly.mybatis.util;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class GenUtil {
+    /**
+     * 将字符串解析成HashMap<br/>
+     * 如：Integer-INT|Long-BIGINT|BigDecimal-DECIMAL
+     */
+    public static Map<String, String> parseDbRef(String ref){
+        Map<String, String> refMap = new HashMap<String, String>();
+
+        Logger.info(Logger.PRE_LONG + "getRef()");
+        Logger.info("ref:" + ref);
+        Logger.info(Logger.PRE_LONG);
+        String[] refSeg = ref.split("\\|");
+        String[] kv = null;
+        for(String r : refSeg){
+            kv = r.split("-");
+            refMap.put(kv[0].toUpperCase(), kv[1]);
+            Logger.info(kv[0].toUpperCase() + ":" + kv[1]);
+        }
+        return refMap;
+    }
+
+    //dbUrl=jdbc:mysql://rm-2zeb8hbbo6449kp8fo.mysql.rds.aliyuncs.com:3306/market?useUnicode=true&characterEncoding=utf8&useOldAliasMetadataBehavior=true
+	public static String parseOutDataBaseName(String dbUrl){
+        String dbName = StringUtils.substringAfter(dbUrl, "//");
+        dbName = StringUtils.substringAfter(dbName, "/");
+        dbName = StringUtils.substringBeforeLast(dbName, "?");
+        dbName = StringUtils.trim(dbName);
+        return dbName;
+    }
+
 	//将数据库的表名，转换为JavaBean名
 	public static String TableNameToPojoName(String tableName){
 		tableName = ColumnNameToJavaPropertyName(tableName);

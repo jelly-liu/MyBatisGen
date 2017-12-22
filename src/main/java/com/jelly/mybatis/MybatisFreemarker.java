@@ -31,18 +31,18 @@ public class MybatisFreemarker {
 	private Map<String, Object> rootMap = new HashMap<String, Object>();
 	
 	public void init() throws Exception {
+        //load config
+        InputStream inputStream = ClassLoader.getSystemResourceAsStream("config.properties");
+        Properties properties = new Properties();
+        properties.load(inputStream);
+
 		//freemarker初始化
 		this.freemarkerConfiguration = new Configuration();
-        String ftlPath = GenMain.class.getResource("/").getPath() + "ftl";
+        String ftlPath = GenMain.class.getResource("/").getPath() + properties.getProperty("ftl.dir");
         System.out.println("ftlPath:" + ftlPath);
         freemarkerConfiguration.setDirectoryForTemplateLoading(new File(ftlPath));
 		this.freemarkerConfiguration.setObjectWrapper(new DefaultObjectWrapper());
-		
-		//load config
-		InputStream inputStream = ClassLoader.getSystemResourceAsStream("config.properties");
-		Properties properties = new Properties();
-		properties.load(inputStream);
-		
+
 		//parse config
 		this.outDir = properties.getProperty("outDir");
 		this.outDir = this.outDir.replaceAll("\\\\", "/");

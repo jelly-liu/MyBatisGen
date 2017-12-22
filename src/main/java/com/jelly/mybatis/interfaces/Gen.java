@@ -44,8 +44,8 @@ public abstract class Gen {
 		this.properties = properties;
 
 		this.databaseType = this.properties.getProperty("database.type").toLowerCase();
-		this.getRef(this.databaseType);
-		this.databaseName = this.properties.getProperty("database.name").toLowerCase();
+        this.databaseName = GenUtil.parseOutDataBaseName(this.properties.getProperty(this.databaseType + ".url").toLowerCase());
+        this.refMap = GenUtil.parseDbRef(this.properties.getProperty(this.databaseType + ".ref"));
 		this.sqlCase = this.properties.getProperty("sqlCase").toLowerCase();
 
 		this.modelPackage = this.properties.getProperty("model.package");
@@ -63,28 +63,6 @@ public abstract class Gen {
 		this.getColumnNames();
 		this.getColumnJavaName();
 		this.getColumnJavaType();
-	}
-
-	/**
-	 * 将字符串解析成HashMap<br/>
-	 * 如：Integer-INT|Long-BIGINT|BigDecimal-DECIMAL
-	 */
-	protected void getRef(String databaseType) {
-		String ref = this.properties.getProperty(databaseType + ".ref");
-		Map<String, String> refMap = new HashMap<String, String>();
-
-		Logger.info(Logger.PRE_LONG + "getRef()");
-		Logger.info("ref:" + ref);
-		Logger.info(Logger.PRE_LONG);
-		String[] refSeg = ref.split("\\|");
-		String[] kv = null;
-		for(String r : refSeg){
-			kv = r.split("-");
-			refMap.put(kv[0].toUpperCase(), kv[1]);
-			Logger.info(kv[0].toUpperCase() + ":" + kv[1]);
-		}
-
-		this.refMap = refMap;
 	}
 
 	protected abstract void initDs() throws Exception;
