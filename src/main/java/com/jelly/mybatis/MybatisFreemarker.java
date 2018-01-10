@@ -94,7 +94,7 @@ public class MybatisFreemarker {
 		
 		rootMap.put("modelPackage", this.gen.getModelPackage());
         rootMap.put("mapperPackage", this.gen.getMapperPackage());
-        rootMap.put("mapperInterfacePackage", this.gen.getMapperPackage());
+        rootMap.put("mapperInterfacePackage", this.gen.getMapperInterfacePackage());
         rootMap.put("daoPackage", this.gen.getDaoPackage());
         rootMap.put("servicePackage", this.gen.getServicePackage());
 	}
@@ -127,7 +127,7 @@ public class MybatisFreemarker {
 			Template template = freemarkerConfiguration.getTemplate("mapper.ftl");
 			/* 将模板和数据模型合并 */
 			String mapperName = this.gen.getTableNamePojoNameMap().get(tableName);
-			Writer out = new OutputStreamWriter(new FileOutputStream(this.mapperDir + mapperName + ".Mapper.xml"), "UTF-8");
+			Writer out = new OutputStreamWriter(new FileOutputStream(this.mapperDir + mapperName + "Mapper.xml"), "UTF-8");
 			template.process(rootMap, out);
 			out.flush();
 
