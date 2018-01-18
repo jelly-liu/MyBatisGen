@@ -13,6 +13,7 @@ public class GenMain {
         mybatisGen.genService();
 		
 		Runtime.getRuntime().exec("cmd.exe /c start " + mybatisGen.getOutDir());
+		//+1
 	}
 
 }
