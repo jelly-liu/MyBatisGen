@@ -215,6 +215,8 @@ public class MybatisFreemarker {
         }
     }
 
+    //+2s
+
 	//getter and setter
 	public String getOutDir() {
 		return outDir;
