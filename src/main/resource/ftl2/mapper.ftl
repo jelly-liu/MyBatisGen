@@ -46,7 +46,7 @@
     </select>
 
     <!-- 生成SelectCount -->
-    <select id="selectCountBySelective" parameterType="${pojoCanonicalName}" resultType="Long">
+    <select id="selectCountBySelective" parameterType="${pojoCanonicalName}" resultType="Integer">
         select count(*) ct
         from ${tableName}
         <where>
