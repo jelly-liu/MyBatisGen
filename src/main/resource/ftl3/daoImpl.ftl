@@ -38,7 +38,7 @@ public class ${PojoName}DaoImpl implements ${PojoName}Dao{
 	}
 
 	@Override
-	public void updateByPrimaryKeySelective(${PojoName} ${PojoNameUncapFirst}) {
+	public void updateSelective(${PojoName} ${PojoNameUncapFirst}) {
         ${PojoNameUncapFirst}Mapper.updateByPrimaryKeySelective(${PojoNameUncapFirst});
 	}
 

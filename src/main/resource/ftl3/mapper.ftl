@@ -104,7 +104,7 @@
         </delete>
     </#if>
     <!-- 注意调用该SQL前必须检查参数的正确性，否则可能会误删除 -->
-    <delete id="deleteBySelective" parameterType="${pojoCanonicalName}">
+    <delete id="deleteSelective" parameterType="${pojoCanonicalName}">
         <!-- 请注意，该表没有主键 -->
         delete
         from ${tableName}
@@ -183,7 +183,7 @@
 	<!-- 生成Update -->
     <!-- 注意调用该SQL前必须检查参数的正确性，否则可能会误更新 -->
 	<#if pksMap[tableName]??><#-- 该表有主键 -->
-	<update id="updateByPrimaryKeySelective" parameterType="${pojoCanonicalName}">
+	<update id="updateSelective" parameterType="${pojoCanonicalName}">
 		update ${tableName} set 
 		<trim suffixOverrides=",">
 			<#list columnNames as columnName>

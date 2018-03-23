@@ -54,8 +54,8 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
     }
 
 	@Override
-	public void updateBySelective(${PojoName} ${PojoNameUncapFirst}) {
-        ${PojoNameUncapFirst}Mapper.updateBySelective(${PojoNameUncapFirst});
+	public void updateSelective(${PojoName} ${PojoNameUncapFirst}) {
+        ${PojoNameUncapFirst}Mapper.updateSelective(${PojoNameUncapFirst});
 	}
 
     @Override
@@ -64,8 +64,8 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
     }
 
     @Override
-    public void deleteBySelective(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
-        ${PojoNameUncapFirst}Mapper.deleteBySelective(${tableNamePojoNameMap[tableName]?uncap_first});
+    public void deleteSelective(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
+        ${PojoNameUncapFirst}Mapper.deleteSelective(${tableNamePojoNameMap[tableName]?uncap_first});
     }
 
 }
