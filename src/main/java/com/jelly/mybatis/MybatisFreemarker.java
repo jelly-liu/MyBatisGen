@@ -18,6 +18,7 @@ import java.util.Properties;
 public class MybatisFreemarker {
 	private Configuration freemarkerConfiguration;
 
+	private String ftlDir;
 	private String outDir;
     private String modelDir;
 	private String mapperDir;
@@ -38,7 +39,8 @@ public class MybatisFreemarker {
 
 		//freemarker初始化
 		this.freemarkerConfiguration = new Configuration();
-        String ftlPath = GenMain.class.getResource("/").getPath() + properties.getProperty("ftl.dir");
+        ftlDir = properties.getProperty("ftl.dir");
+        String ftlPath = GenMain.class.getResource("/").getPath() + ftlDir;
         System.out.println("ftlPath:" + ftlPath);
         freemarkerConfiguration.setDirectoryForTemplateLoading(new File(ftlPath));
 		this.freemarkerConfiguration.setObjectWrapper(new DefaultObjectWrapper());
@@ -215,10 +217,18 @@ public class MybatisFreemarker {
         }
     }
 
-    //+2s
-
 	//getter and setter
-	public String getOutDir() {
+
+    public String getFtlDir() {
+        return ftlDir;
+    }
+
+    public MybatisFreemarker setFtlDir(String ftlDir) {
+        this.ftlDir = ftlDir;
+        return this;
+    }
+
+    public String getOutDir() {
 		return outDir;
 	}
 

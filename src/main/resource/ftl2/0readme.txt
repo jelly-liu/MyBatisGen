@@ -1,11 +1,9 @@
 model
     as java model
 mapper
-    as mapper
-dao
-    inject mapper
+    as dao
 service
-    inject dao
-=======================
-here we see, dao is redundancy, actually, mapper can be as an dao layer
-so, we create ftl3
+    inject mapper
+=====================
+notice:
+    copy BaseModel to modelPackage, package name looks like com.jelly.model
