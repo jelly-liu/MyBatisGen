@@ -20,6 +20,12 @@ public class GenMain {
             mybatisGen.genMapperInterface();
 //            mybatisGen.genDao();
             mybatisGen.genService();
+        }else if(StringUtils.equals(mybatisGen.getFtlDir(), "ftl3")){
+            mybatisGen.genPOJO();
+            mybatisGen.genMapper();
+            mybatisGen.genMapperInterface();
+//            mybatisGen.genDao();
+            mybatisGen.genService();
         }else {
 		    throw new RuntimeException("配置文件中的 ftl.dir， 值必须是 ftl 或 ftl2");
         }

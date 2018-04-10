@@ -52,13 +52,13 @@ public class MybatisFreemarker {
 			this.outDir += "/";
 		}
 
-		this.modelDir = this.outDir + "model/";
-        this.mapperDir = this.outDir + "mapper/";
-        this.mapperInterfaceDir = this.outDir + "mapper/";
-        this.daoDir = this.outDir + "dao/";
-        this.daoImplDir = this.outDir + "dao/impl/";
-        this.serviceDir = this.outDir + "service/";
-        this.serviceImplDir = this.outDir + "service/impl/";
+		this.modelDir = this.outDir + StringUtils.replace(properties.getProperty("model.package"), ".", "/") + "/";
+        this.mapperDir = this.outDir + StringUtils.replace(properties.getProperty("mapper.package"), ".", "/") + "/";
+        this.mapperInterfaceDir = this.outDir + StringUtils.replace(properties.getProperty("mapperInterface.package"), ".", "/") + "/";
+        this.daoDir = this.outDir + StringUtils.replace(properties.getProperty("dao.package"), ".", "/") + "/";
+        this.daoImplDir = this.outDir + StringUtils.replace(properties.getProperty("dao.package"), ".", "/") + "/impl/";
+        this.serviceDir = this.outDir + StringUtils.replace(properties.getProperty("service.package"), ".", "/") + "/";
+        this.serviceImplDir = this.outDir + StringUtils.replace(properties.getProperty("service.package"), ".", "/") + "/impl/";
 		this.checkDir();
 		
 		String databaseType = properties.getProperty("database.type").toLowerCase();
