@@ -32,17 +32,17 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	}
 
 	@Override
-	public void UpdateWithNull(${PojoName} ${PojoNameUncapFirst}) {
+	public void updateWithNull(${PojoName} ${PojoNameUncapFirst}) {
         baseDao.myUpdate(${PojoName}.UpdateWithNull, ${PojoNameUncapFirst});
 	}
 
 	@Override
-	public void DeleteByPk(String pk) {
+	public void deleteByPk(String pk) {
         baseDao.myDelete(${PojoName}.DeleteByPk, pk);
 	}
 
 	@Override
-	public void DeleteByPojo(${PojoName} ${PojoNameUncapFirst}) {
+	public void deleteByPojo(${PojoName} ${PojoNameUncapFirst}) {
         baseDao.myDelete(${PojoName}.DeleteByPojo, ${PojoNameUncapFirst});
 	}
 
