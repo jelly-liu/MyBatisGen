@@ -11,7 +11,7 @@ public class GenMain {
 		if(StringUtils.equals(mybatisGen.getFtlDir(), "ftl")){
             mybatisGen.genPOJO();
             mybatisGen.genMapper();
-            mybatisGen.genMapperInterface();
+//            mybatisGen.genMapperInterface();
             mybatisGen.genDao();
             mybatisGen.genService();
         }else if(StringUtils.equals(mybatisGen.getFtlDir(), "ftl2")){

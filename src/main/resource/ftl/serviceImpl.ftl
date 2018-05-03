@@ -9,13 +9,12 @@ package ${servicePackage}.impl;
 <#assign PojoNameUncapFirst = tableNamePojoNameMap[tableName]?uncap_first />
 
 import ${modelPackage}.${PojoName};
-import ${daoPackage}.${PojoName}Dao;
 import ${servicePackage}.${PojoName}Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
+import java.util.List;
 
 @Repository
 public class ${PojoName}ServiceImpl implements ${PojoName}Service{
@@ -48,7 +47,7 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	}
 
     @Override
-	public ${PojoName} select(${PojoName} ${PojoNameUncapFirst}) {
+	public List<${PojoName}> select(${PojoName} ${PojoNameUncapFirst}) {
         return baseDao.mySelectList(${PojoName}.Select, ${PojoNameUncapFirst});
 	}
 
