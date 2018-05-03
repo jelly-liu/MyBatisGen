@@ -20,31 +20,46 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	@Autowired
-    private ${PojoName}Dao ${PojoNameUncapFirst}Dao;
-
-	@Override
-	public ${PojoName} selectByPrimaryKey(String id) {
-        return ${PojoNameUncapFirst}Dao.selectByPrimaryKey(id);
-	}
+    private ${daoPackage}.BaseDao baseDao;
 
 	@Override
 	public void insert(${PojoName} ${PojoNameUncapFirst}) {
-            ${PojoNameUncapFirst}Dao.insert(${PojoNameUncapFirst});
+		baseDao.myInsert(${PojoName}.Insert, ${PojoNameUncapFirst});
 	}
 
 	@Override
-	public void insertSelective(${PojoName} ${PojoNameUncapFirst}) {
-        ${PojoNameUncapFirst}Dao.insertSelective(${PojoNameUncapFirst});
+	public void update(${PojoName} ${PojoNameUncapFirst}) {
+        baseDao.myUpdate(${PojoName}.Update, ${PojoNameUncapFirst});
 	}
 
 	@Override
-	public void updateByPrimaryKeySelective(${PojoName} ${PojoNameUncapFirst}) {
-        ${PojoNameUncapFirst}Dao.updateByPrimaryKeySelective(${PojoNameUncapFirst});
+	public void UpdateWithNull(${PojoName} ${PojoNameUncapFirst}) {
+        baseDao.myUpdate(${PojoName}.UpdateWithNull, ${PojoNameUncapFirst});
 	}
 
 	@Override
-	public void updateByPrimaryKey(${PojoName} ${PojoNameUncapFirst}) {
-        ${PojoNameUncapFirst}Dao.updateByPrimaryKey(${PojoNameUncapFirst});
+	public void DeleteByPk(String pk) {
+        baseDao.myDelete(${PojoName}.DeleteByPk, pk);
+	}
+
+	@Override
+	public void DeleteByPojo(${PojoName} ${PojoNameUncapFirst}) {
+        baseDao.myDelete(${PojoName}.DeleteByPojo, ${PojoNameUncapFirst});
+	}
+
+    @Override
+	public ${PojoName} select(${PojoName} ${PojoNameUncapFirst}) {
+        return baseDao.mySelectList(${PojoName}.Select, ${PojoNameUncapFirst});
+	}
+
+    @Override
+	public Long SelectCount(${PojoName} ${PojoNameUncapFirst}) {
+        return baseDao.mySelectOne(${PojoName}.SelectCount, ${PojoNameUncapFirst});
+	}
+
+	@Override
+	public ${PojoName} selectByPrimaryKey(String pk) {
+        return baseDao.mySelectOne(${PojoName}.SelectByPk, pk);
 	}
 
 }

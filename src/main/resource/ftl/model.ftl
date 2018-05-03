@@ -9,14 +9,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class ${tableNamePojoNameMap[tableName]} {
-	public static final String Insert = "${modelPackage}.${tableNamePojoNameMap[tableName]}.Insert";
-	public static final String Update = "${modelPackage}.${tableNamePojoNameMap[tableName]}.Update";
-	public static final String UpdateWithNull = "${modelPackage}.${tableNamePojoNameMap[tableName]}.UpdateWithNull";
-	public static final String DeleteByPk = "${modelPackage}.${tableNamePojoNameMap[tableName]}.DeleteByPk";
-	public static final String DeleteByPojo = "${modelPackage}.${tableNamePojoNameMap[tableName]}.DeleteByPojo";
-	public static final String Select = "${modelPackage}.${tableNamePojoNameMap[tableName]}.Select";
-	public static final String SelectCount = "${modelPackage}.${tableNamePojoNameMap[tableName]}.SelectCount";
-	public static final String SelectByPk = "${modelPackage}.${tableNamePojoNameMap[tableName]}.SelectByPk";
+	public static final String Insert = "${tableNamePojoNameMap[tableName]}.Insert";
+	public static final String Update = "${tableNamePojoNameMap[tableName]}.Update";
+	public static final String UpdateWithNull = "${tableNamePojoNameMap[tableName]}.UpdateWithNull";
+	public static final String DeleteByPk = "${tableNamePojoNameMap[tableName]}.DeleteByPk";
+	public static final String DeleteByPojo = "${tableNamePojoNameMap[tableName]}.DeleteByPojo";
+	public static final String Select = "${tableNamePojoNameMap[tableName]}.Select";
+	public static final String SelectCount = "${tableNamePojoNameMap[tableName]}.SelectCount";
+	public static final String SelectByPk = "${tableNamePojoNameMap[tableName]}.SelectByPk";
 <#list columnNames as columnName>
 	<#assign columnJavaType = columnJavaTypeMap[tableName + "|" + columnName] />
 	<#assign columnJavaName = columnJavaNameMap[tableName + "|" + columnName] />

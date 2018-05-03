@@ -8,7 +8,7 @@
 <#-- JavaBean全名(包名+类名) -->
 <#assign pojoCanonicalName = modelPackage + "." + pojoName />
 
-<mapper namespace="${pojoCanonicalName}">
+<mapper namespace="${tableNamePojoNameMap[tableName]}">
 	<!-- 生成Insert -->
 	<#if pksMap[tableName]??><#-- 该表有主键 -->
 		<#if (pksMap[tableName]?size == 1)><#-- 该表有主键，且是单列主键 -->
