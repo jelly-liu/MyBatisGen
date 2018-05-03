@@ -10,6 +10,7 @@ package ${servicePackage}.impl;
 
 import ${modelPackage}.${PojoName};
 import ${servicePackage}.${PojoName}Service;
+import ${daoPackage}.BaseDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,7 @@ import java.util.List;
 @Repository
 public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	@Autowired
-    private ${daoPackage}.BaseDao baseDao;
+    private BaseDao baseDao;
 
 	@Override
 	public void insert(${PojoName} ${PojoNameUncapFirst}) {
