@@ -13,11 +13,11 @@ import ${servicePackage}.${PojoName}Service;
 import ${daoPackage}.BaseDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository
+@Service
 public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	@Autowired
     private BaseDao baseDao;
@@ -50,6 +50,15 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
     @Override
 	public List<${PojoName}> select(${PojoName} ${PojoNameUncapFirst}) {
         return baseDao.mySelectList(${PojoName}.Select, ${PojoNameUncapFirst});
+	}
+
+	@Override
+	public ${PojoName} selectOne(${PojoName} ${PojoNameUncapFirst}) {
+        List<${PojoName}> list = baseDao.mySelectList(${PojoName}.Select, ${PojoNameUncapFirst});
+        if(list == null || list.size() == 0){
+            return null;
+        }
+        return list.get(0);
 	}
 
     @Override
