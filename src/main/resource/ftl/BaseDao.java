@@ -52,6 +52,10 @@ public class BaseDao {
 		return this.sqlSessionTemplate.selectList(statement, param);
 	}
 
+	public <E> List<E> mySelectListPage(String statement, Object param, RowBounds rowBounds){
+		return this.sqlSessionTemplate.selectList(statement, param, rowBounds);
+	}
+
 	public <T> T mySelectOne(String statement){
 		return this.sqlSessionTemplate.selectOne(statement);
 	}

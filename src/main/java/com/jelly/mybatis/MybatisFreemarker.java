@@ -33,7 +33,7 @@ public class MybatisFreemarker {
 	
 	public void init() throws Exception {
         //load config
-        InputStream inputStream = ClassLoader.getSystemResourceAsStream("config.properties");
+        InputStream inputStream = ClassLoader.getSystemResourceAsStream("config-krc.properties");
         Properties properties = new Properties();
         properties.load(inputStream);
 

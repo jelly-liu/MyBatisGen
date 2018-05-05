@@ -11,6 +11,7 @@ package ${servicePackage}.impl;
 import ${modelPackage}.${PojoName};
 import ${servicePackage}.${PojoName}Service;
 import ${daoPackage}.BaseDao;
+import org.apache.ibatis.session.RowBounds;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,11 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	}
 
 	@Override
+	public List<${PojoName}> selectPage(${PojoName} ${PojoNameUncapFirst}, RowBounds rowBounds) {
+        return baseDao.mySelectListPage(${PojoName}.Select, ${PojoNameUncapFirst}, rowBounds);
+	}
+
+	@Override
 	public ${PojoName} selectOne(${PojoName} ${PojoNameUncapFirst}) {
         List<${PojoName}> list = baseDao.mySelectList(${PojoName}.Select, ${PojoNameUncapFirst});
         if(list == null || list.size() == 0){
@@ -62,7 +68,7 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	}
 
     @Override
-	public Long SelectCount(${PojoName} ${PojoNameUncapFirst}) {
+	public Long selectCount(${PojoName} ${PojoNameUncapFirst}) {
         return baseDao.mySelectOne(${PojoName}.SelectCount, ${PojoNameUncapFirst});
 	}
 
