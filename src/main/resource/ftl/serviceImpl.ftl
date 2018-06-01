@@ -24,28 +24,28 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
     private BaseDao baseDao;
 
 	@Override
-	public void insert(${PojoName} ${PojoNameUncapFirst}) {
-		baseDao.myInsert(${PojoName}.Insert, ${PojoNameUncapFirst});
+	public int insert(${PojoName} ${PojoNameUncapFirst}) {
+		return baseDao.myInsert(${PojoName}.Insert, ${PojoNameUncapFirst});
 	}
 
 	@Override
-	public void update(${PojoName} ${PojoNameUncapFirst}) {
-        baseDao.myUpdate(${PojoName}.Update, ${PojoNameUncapFirst});
+	public int update(${PojoName} ${PojoNameUncapFirst}) {
+        return baseDao.myUpdate(${PojoName}.Update, ${PojoNameUncapFirst});
 	}
 
 	@Override
-	public void updateWithNull(${PojoName} ${PojoNameUncapFirst}) {
-        baseDao.myUpdate(${PojoName}.UpdateWithNull, ${PojoNameUncapFirst});
+	public int updateWithNull(${PojoName} ${PojoNameUncapFirst}) {
+        return baseDao.myUpdate(${PojoName}.UpdateWithNull, ${PojoNameUncapFirst});
 	}
 
 	@Override
-	public void deleteByPk(String pk) {
-        baseDao.myDelete(${PojoName}.DeleteByPk, pk);
+	public int deleteByPk(String pk) {
+       return baseDao.myDelete(${PojoName}.DeleteByPk, pk);
 	}
 
 	@Override
-	public void deleteByPojo(${PojoName} ${PojoNameUncapFirst}) {
-        baseDao.myDelete(${PojoName}.DeleteByPojo, ${PojoNameUncapFirst});
+	public int deleteByPojo(${PojoName} ${PojoNameUncapFirst}) {
+        return baseDao.myDelete(${PojoName}.DeleteByPojo, ${PojoNameUncapFirst});
 	}
 
     @Override

@@ -20,6 +20,7 @@ public class MybatisFreemarker {
 
 	private String ftlDir;
 	private String outDir;
+	private String projectDir;
     private String modelDir;
 	private String mapperDir;
     private String mapperInterfaceDir;
@@ -51,6 +52,8 @@ public class MybatisFreemarker {
 		if(!this.outDir.endsWith("/")){
 			this.outDir += "/";
 		}
+
+        this.projectDir = properties.getProperty("projectDir");
 
 		this.modelDir = this.outDir + StringUtils.replace(properties.getProperty("model.package"), ".", "/") + "/";
         this.mapperDir = this.outDir + StringUtils.replace(properties.getProperty("mapper.package"), ".", "/") + "/";
@@ -218,6 +221,16 @@ public class MybatisFreemarker {
     }
 
 	//getter and setter
+
+
+    public String getProjectDir() {
+        return projectDir;
+    }
+
+    public MybatisFreemarker setProjectDir(String projectDir) {
+        this.projectDir = projectDir;
+        return this;
+    }
 
     public String getFtlDir() {
         return ftlDir;
