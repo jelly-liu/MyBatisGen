@@ -7,8 +7,9 @@ package ${modelPackage};
 
 import java.math.BigDecimal;
 import java.util.Date;
+import ${modelPackage}.ConditionDomain;
 
-public class ${tableNamePojoNameMap[tableName]} {
+public class ${tableNamePojoNameMap[tableName]} extends ConditionDomain {
 	public static final String Insert = "${tableNamePojoNameMap[tableName]}.Insert";
 	public static final String Update = "${tableNamePojoNameMap[tableName]}.Update";
 	public static final String UpdateWithNull = "${tableNamePojoNameMap[tableName]}.UpdateWithNull";

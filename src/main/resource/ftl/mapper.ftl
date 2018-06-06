@@ -171,9 +171,16 @@
 			<#assign columnJavaType = columnJavaTypeMap[tableName + "|" + columnName] />
 			<#assign columnJavaName = columnJavaNameMap[tableName + "|" + columnName] />
 			<#if (columnJavaType == 'String')>
-                <if test="${columnJavaName} != null and ${columnJavaName} != ''">
-                    and ${columnName} = #${r"{"}${columnJavaName}${r"}"}
-                </if>
+                <choose>
+                    <when test="likeSqlColumnSet != null and '${columnJavaName}' in likeSqlColumnSet">
+                        and ${columnName} like '%$${r"{"}${columnJavaName}${r"}"}%'
+                    </when>
+                    <otherwise>
+                        <if test="${columnJavaName} != null and ${columnJavaName} != ''">
+                            and ${columnName} = #${r"{"}${columnJavaName}${r"}"}
+                        </if>
+                    </otherwise>
+                </choose>
 			<#else>
                 <if test="${columnJavaName} != null">
                     and ${columnName} = #${r"{"}${columnJavaName}${r"}"}
@@ -181,6 +188,17 @@
 			</#if>
 		</#list>
 	</sql>
+
+    <sql id="SelectOrderBy">
+        <if test="sortConditionSet != null and sortConditionSet.size() > 0">
+            order by
+            <trim suffixOverrides=",">
+                <foreach collection="sortConditionSet" item="item">
+                    ${r"${item.colName}"} ${r"${item.sort}"},
+                </foreach>
+            </trim>
+        </if>
+    </sql>
 	
 	<!-- 生成Select -->
 	<select id="Select" parameterType="${pojoCanonicalName}" resultType="${pojoCanonicalName}">
@@ -189,7 +207,19 @@
 		from ${tableName}
 		where 1 = 1
 		<include refid="SelectWheres"/>
+        <include refid="SelectOrderBy"/>
 	</select>
+
+    <!-- 生成Select -->
+    <select id="selectPage" parameterType="${pojoCanonicalName}" resultType="${pojoCanonicalName}">
+        select
+        <include refid="SelectColumns"/>
+        from ${tableName}
+        where 1 = 1
+        <include refid="SelectWheres"/>
+        <include refid="SelectOrderBy"/>
+        limit ${r"#{offset}"},${r"#{length}"}
+    </select>
 
     <!-- 生成SelectCount -->
     <select id="SelectCount" parameterType="${pojoCanonicalName}" resultType="Long">
