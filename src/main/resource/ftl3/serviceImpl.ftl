@@ -9,7 +9,7 @@ package ${servicePackage}.impl;
 <#assign PojoNameUncapFirst = tableNamePojoNameMap[tableName]?uncap_first />
 
 import ${modelPackage}.${PojoName};
-import ${mapperPackage}.${PojoName}Mapper;
+import ${mapperInterfacePackage}.${PojoName}Mapper;
 import ${servicePackage}.${PojoName}Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,24 @@ import java.util.List;
 
 @Service
 public class ${PojoName}ServiceImpl implements ${PojoName}Service{
+    <#-- 如果表有2个列做为联合主键，如user_id, role_id，则生成selectByPk和deleteByPk的方法签名会生成为：(Integer userId, Integer roleId) -->
+    <#assign methodSignature = "" />
+    <#assign methodParams = "" />
+    <#if pksMap[tableName]?? && pksMap[tableName]?size != 0>
+        <#list pksMap[tableName] as columnName>
+            <#assign columnJavaType = columnJavaTypeMap[tableName + "|" + columnName] />
+            <#assign columnJavaName = columnJavaNameMap[tableName + "|" + columnName] />
+
+            <#if columnName_has_next>
+                <#assign methodSignature = methodSignature + columnJavaType + " " + columnJavaName + ", "/>
+                <#assign methodParams = methodParams + columnJavaName + ", "/>
+            <#else>
+                <#assign methodSignature = methodSignature + columnJavaType + " " + columnJavaName />
+                <#assign methodParams = methodParams + columnJavaName/>
+            </#if>
+        </#list>
+    </#if>
+
 	@Autowired
     private ${PojoName}Mapper ${PojoNameUncapFirst}Mapper;
 
@@ -34,9 +52,18 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	}
 
 	@Override
-	public ${PojoName} selectByPk(String id) {
-        return ${PojoNameUncapFirst}Mapper.selectByPk(id);
+	public ${PojoName} selectByPk(${methodSignature}) {
+        return ${PojoNameUncapFirst}Mapper.selectByPk(${methodParams});
 	}
+
+    public ${tableNamePojoNameMap[tableName]} selectOne(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
+        List<${tableNamePojoNameMap[tableName]}> list = ${PojoNameUncapFirst}Mapper.select(${tableNamePojoNameMap[tableName]?uncap_first});
+        if(list == null || list.size() == 0){
+            return null;
+        }
+
+        return list.get(0);
+    }
 
 	@Override
 	public void insert(${PojoName} ${PojoNameUncapFirst}) {
@@ -54,8 +81,8 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	}
 
     @Override
-    public void deleteByPk(String pk){
-        ${PojoNameUncapFirst}Mapper.deleteByPk(pk);
+    public void deleteByPk(${methodSignature}){
+        ${PojoNameUncapFirst}Mapper.deleteByPk(${methodParams});
     }
 
     @Override

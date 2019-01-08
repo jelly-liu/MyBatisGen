@@ -83,6 +83,7 @@ public class MybatisFreemarker {
         new File(this.outDir).mkdirs();
         new File(this.modelDir).mkdirs();
         new File(this.mapperDir).mkdirs();
+        new File(this.mapperInterfaceDir).mkdirs();
         new File(this.daoDir).mkdirs();
         new File(this.daoImplDir).mkdirs();
         new File(this.serviceDir).mkdirs();
@@ -150,7 +151,7 @@ public class MybatisFreemarker {
             Template template = freemarkerConfiguration.getTemplate("mapperInterface.ftl");
             /* 将模板和数据模型合并 */
             String mapperInterfaceName = this.gen.getTableNamePojoNameMap().get(tableName) + "Mapper";
-            Writer out = new OutputStreamWriter(new FileOutputStream(this.mapperDir + mapperInterfaceName + ".java"), "UTF-8");
+            Writer out = new OutputStreamWriter(new FileOutputStream(this.mapperInterfaceDir + mapperInterfaceName + ".java"), "UTF-8");
             template.process(rootMap, out);
             out.flush();
 
