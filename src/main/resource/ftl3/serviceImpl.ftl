@@ -21,21 +21,21 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
 	@Autowired
     private ${PojoName}Mapper ${PojoNameUncapFirst}Mapper;
 
-	public List<${tableNamePojoNameMap[tableName]}> selectBySelective(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
-		return ${PojoNameUncapFirst}Mapper.selectBySelective(${tableNamePojoNameMap[tableName]?uncap_first});
+	public List<${tableNamePojoNameMap[tableName]}> select(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
+		return ${PojoNameUncapFirst}Mapper.select(${tableNamePojoNameMap[tableName]?uncap_first});
 	}
 
-    public List<${tableNamePojoNameMap[tableName]}> selectBySelectivePage(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
-        return ${PojoNameUncapFirst}Mapper.selectBySelectivePage(${tableNamePojoNameMap[tableName]?uncap_first});
+    public List<${tableNamePojoNameMap[tableName]}> selectPage(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
+        return ${PojoNameUncapFirst}Mapper.selectPage(${tableNamePojoNameMap[tableName]?uncap_first});
     }
 
-	public Integer selectCountBySelective(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
-		return ${PojoNameUncapFirst}Mapper.selectCountBySelective(${tableNamePojoNameMap[tableName]?uncap_first});
+	public Integer selectCount(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
+		return ${PojoNameUncapFirst}Mapper.selectCount(${tableNamePojoNameMap[tableName]?uncap_first});
 	}
 
 	@Override
-	public ${PojoName} selectByPrimaryKey(String id) {
-        return ${PojoNameUncapFirst}Mapper.selectByPrimaryKey(id);
+	public ${PojoName} selectByPk(String id) {
+        return ${PojoNameUncapFirst}Mapper.selectByPk(id);
 	}
 
 	@Override
@@ -43,29 +43,24 @@ public class ${PojoName}ServiceImpl implements ${PojoName}Service{
             ${PojoNameUncapFirst}Mapper.insert(${PojoNameUncapFirst});
 	}
 
-	@Override
-	public void insertSelective(${PojoName} ${PojoNameUncapFirst}) {
-        ${PojoNameUncapFirst}Mapper.insertSelective(${PojoNameUncapFirst});
-	}
-
     @Override
-    public void updateByPrimaryKey(${PojoName} ${PojoNameUncapFirst}) {
-        ${PojoNameUncapFirst}Mapper.updateByPrimaryKey(${PojoNameUncapFirst});
+    public void update(${PojoName} ${PojoNameUncapFirst}) {
+        ${PojoNameUncapFirst}Mapper.update(${PojoNameUncapFirst});
     }
 
 	@Override
-	public void updateSelective(${PojoName} ${PojoNameUncapFirst}) {
-        ${PojoNameUncapFirst}Mapper.updateSelective(${PojoNameUncapFirst});
+	public void updateWithNull(${PojoName} ${PojoNameUncapFirst}) {
+        ${PojoNameUncapFirst}Mapper.updateWithNull(${PojoNameUncapFirst});
 	}
 
     @Override
-    public void deleteByPrimaryKey(String pk){
-        ${PojoNameUncapFirst}Mapper.deleteByPrimaryKey(pk);
+    public void deleteByPk(String pk){
+        ${PojoNameUncapFirst}Mapper.deleteByPk(pk);
     }
 
     @Override
-    public void deleteSelective(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
-        ${PojoNameUncapFirst}Mapper.deleteSelective(${tableNamePojoNameMap[tableName]?uncap_first});
+    public void deleteByPojo(${tableNamePojoNameMap[tableName]} ${tableNamePojoNameMap[tableName]?uncap_first}){
+        ${PojoNameUncapFirst}Mapper.deleteByPojo(${tableNamePojoNameMap[tableName]?uncap_first});
     }
 
 }

@@ -32,9 +32,9 @@ public class MybatisFreemarker {
 	private Gen gen;
 	private Map<String, Object> rootMap = new HashMap<String, Object>();
 	
-	public void init() throws Exception {
+	public void init(String classPathConfig) throws Exception {
         //load config
-        InputStream inputStream = ClassLoader.getSystemResourceAsStream("config-krc.properties");
+        InputStream inputStream = ClassLoader.getSystemResourceAsStream(classPathConfig);
         Properties properties = new Properties();
         properties.load(inputStream);
 

@@ -8,9 +8,7 @@ package ${modelPackage};
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.krc.lottery.model.framework.ModelBase;
-
-public class ${tableNamePojoNameMap[tableName]} extends ModelBase {
+public class ${tableNamePojoNameMap[tableName]} extends ConditionDomain {
 
 <#list columnNames as columnName>
 	<#assign columnJavaType = columnJavaTypeMap[tableName + "|" + columnName] />
