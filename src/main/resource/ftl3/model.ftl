@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class ${tableNamePojoNameMap[tableName]} extends ConditionDomain {
+    public static final String TABLE_NAME = "${tableName}";
 
 <#list columnNames as columnName>
 	<#assign columnJavaType = columnJavaTypeMap[tableName + "|" + columnName] />

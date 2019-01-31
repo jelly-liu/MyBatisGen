@@ -133,7 +133,7 @@
         </delete>
     </#if>
     <!-- 注意调用该SQL前必须检查参数的正确性，否则可能会误删除 -->
-    <delete id="deleteByPojo" parameterType="${pojoCanonicalName}">
+    <delete id="delete" parameterType="${pojoCanonicalName}">
         <!-- 请注意，该表没有主键 -->
         delete
         from ${tableName}
@@ -244,4 +244,19 @@
         </#list>
     </select>
     </#if>
+
+    <select id="selectOne" parameterType="${pojoCanonicalName}" resultType="${pojoCanonicalName}">
+        select
+        <include refid="selectColumns"/>
+        from ${tableName}
+        where 1 = 1
+        <include refid="selectWheres"/>
+        limit 1
+    </select>
+
+    <select id="selectAll" resultType="${pojoCanonicalName}">
+        select
+        <include refid="selectColumns"/>
+        from ${tableName}
+    </select>
 </mapper>
