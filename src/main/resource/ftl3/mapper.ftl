@@ -93,6 +93,48 @@
     </update>
     </#if>
 
+    <!-- 生成Update -->
+    <!-- 注意调用该SQL前必须检查参数的正确性，否则可能会误更新 -->
+    <#if pksMap[tableName]??><#-- 该表有主键 -->
+        <update id="updateWithVersion" parameterType="${pojoCanonicalName}">
+            update ${tableName} set
+            <trim prefixOverrides="," suffixOverrides=",">
+                <#list columnNames as columnName>
+                    <#assign columnJavaType = columnJavaTypeMap[tableName + "|" + columnName] />
+                    <#assign columnJavaName = columnJavaNameMap[tableName + "|" + columnName] />
+                    <#if (columnJavaType == 'String')>
+                        <if test="${columnJavaName} != null and ${columnJavaName} != ''">
+                            ${columnName} = #${r"{"}${columnJavaName}${r"}"},
+                        </if>
+                    <#else>
+                        <if test="${columnJavaName} != null and ${columnJavaName?lower_case} != 'version'">
+                            ${columnName} = #${r"{"}${columnJavaName}${r"}"},
+                        </if>
+                    </#if>
+                </#list>
+                , version = version + 1
+            </trim>
+
+            where
+            <trim prefixOverrides="," suffixOverrides=",">
+                <#list pksMap[tableName] as columnName>
+                    <#assign columnJavaName = columnJavaNameMap[tableName + "|" + columnName] />
+                    <#if (columnJavaType == 'String')>
+                        <if test="${columnJavaName} != null and ${columnJavaName} != ''">
+                            ${columnName} = #${r"{"}${columnJavaName}${r"}"}
+                        </if>
+                    <#else>
+                        <if test="${columnJavaName} != null">
+                            ${columnName} = #${r"{"}${columnJavaName}${r"}"}
+                        </if>
+                    </#if>
+                    <#if columnName_has_next>and</#if>
+                </#list>
+                and version = #${r"{version}"}
+            </trim>
+        </update>
+    </#if>
+
     <!-- 生成UpdateWithNull -->
     <!-- 注意调用该SQL前必须先根据主键查询出该记录所有列数据，再设置某列为null -->
 	<#if pksMap[tableName]??><#-- 该表有主键 -->

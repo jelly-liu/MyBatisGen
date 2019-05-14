@@ -1,4 +1,4 @@
-package ${modelPackage};
+package ${your.entity.package.name};
 
 import org.apache.commons.lang3.StringUtils;
 
