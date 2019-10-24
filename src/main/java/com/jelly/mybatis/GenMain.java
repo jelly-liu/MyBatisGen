@@ -6,7 +6,7 @@ public class GenMain {
 
 	public static void main(String[] args) throws Exception {
 		MybatisFreemarker mybatisGen = new MybatisFreemarker();
-		mybatisGen.init("config-xxx.properties");
+		mybatisGen.init("config-ttht.properties");
 
 		if(StringUtils.equals(mybatisGen.getFtlDir(), "ftl")){
             mybatisGen.genPOJO();
