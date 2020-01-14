@@ -3,6 +3,8 @@ generate mapper of mybatis, support mysql, oracle
 # Contact  
 qq:195358385  
 email:collonn@126.com  
+# Frameworks
+only need freemarker
 # Feature
 fast to generate mapper and pojo  
 support mysql,oracle，if you want to make it to support other database，implement com.collonn.mybatis.interfaces.Gen  
